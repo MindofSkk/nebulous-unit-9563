@@ -13,9 +13,10 @@ import { useState } from "react";
 import { Form } from "./Form";
 import styles from "./Expenses.module.css";
 import { Table } from "./Table";
-import { Route, Routes, useParams } from "react-router-dom";
+import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { Expenses } from "./Expenses";
 import axios from "axios";
+
 
 const EditExpence = () => {
   const [div, SetDiv] = useState(false);
@@ -28,6 +29,7 @@ const EditExpence = () => {
   const [show, Setshow] = useState(true);
   const [last, Setlast] = useState(true);
 
+  const navigate=useNavigate()
   const { id } = useParams();
 
   console.log(id);
@@ -46,27 +48,20 @@ const EditExpence = () => {
       .patch(`http://localhost:8080/expenses/${id}`, payload)
       .then(({ data }) => {
         console.log(data, "test");
-        window.location.reload(false);
+        navigate("/expenses")
       });
   };
   console.log(id);
-  // const deleteExpence =() =>{
-  //     fetch(`http://localhost:8080/${id}` ,{
-  //       method :"DELETE",
-  //       headers :{
-  //         "Content-Type" : 'application/json',
-  //       }
-  //     })
-  //     .then((res) =>window.location.reload(false))
-  //     .catch((err) =>console.log(err))
-  // }
 
   const deleteExpence = () => {
     axios.delete(`http://localhost:8080/expenses/${id}`);
-    Setlast(false);
-    window.location.reload(false);
+    Setlast(false); 
+    navigate("/expenses")
+
   };
 
+
+  
   return (
     <div>
       {last ? (

@@ -8,65 +8,82 @@ import {
   Select,
   Stack,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form } from "./Form";
 import styles from "./Expenses.module.css";
 import { Table } from "./Table";
-import { Route, Routes } from "react-router-dom";
-import EditExpence from "./EditExpence";
+import { BlankBox } from "./BlankBox";
+import { Spinner } from "@chakra-ui/react";
 
 export const Expenses = () => {
   const [div, SetDiv] = useState(false);
-  // console.log(div);
-  
-  const [projectname ,SetProject ]=useState("");
-  const [expensee,Setpu]=useState("");
-  const [notes,SetNotes]=useState("")
-  const [date,Setdate]=useState("");
-  const [amount ,Setamount ]=useState(0);
-  const [table,setTable]=useState(true)
- 
-  // <Routes>
-  //   <Route path="expences/:id/edit" element={<EditExpence />} />
-  // </Routes>
+  const [projectname, SetProject] = useState("");
+  const [expensee, Setpu] = useState("");
+  const [notes, SetNotes] = useState("");
+  const [date, Setdate] = useState("");
+  const [amount, Setamount] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [tabledata, setTabledata] = useState([]);
 
-  const handleSubmit =async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const payload = {
       projectname,
       expensee,
       notes,
       amount,
-      date
-      
-    }
-   console.log(payload)
-    await fetch("http://localhost:8080/expenses" ,{
-      method :"POST",
-      body : JSON.stringify(payload),
-      headers :{
-        "Content-Type" : 'application/json',
-      }
+      date,
+    };
+    console.log(payload);
+    await fetch("http://localhost:8080/expenses", {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
-    .then((res) =>res.json())
-    .then((res) =>{
-      console.log(res);
-      window.location.reload(false);
-
-    })
-    .catch((err) =>console.log(err))
-
-
+      .then((res) => res.json())
+      .then((res) => {
+        console.log("post", res);
+        getdata();
+      })
+      .catch((err) => console.log(err));
 
     SetDiv(false);
-    setTable(true)
-
-
-
   };
+
+  const getdata = async() => {
+    setLoading(true);
+
+    fetch("http://localhost:8080/expenses", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log("getdata", res);
+        setTabledata(res);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+    
+   
+  };
+
+  useEffect(() => {
+    getdata();
+  }, []);
+
+  if (loading) {
+    return <Spinner m="auto"  />;
+  }
   return (
     <div>
-     
       <Box w="100%" p={4}>
         <Box className={styles.main}>
           <h1>Expenses</h1>
@@ -81,32 +98,43 @@ export const Expenses = () => {
               <Box className={styles.dleft}>
                 <h1>Date</h1>
 
-                <Input type="date" value={date} onChange={(e) => Setdate(e.target.value)} />
+                <Input
+                  type="date"
+                  value={date}
+                  onChange={(e) => Setdate(e.target.value)}
+                />
               </Box>
               <Box spacing={3}>
                 <h1>Project / Category</h1>
                 <form action="" onSubmit={handleSubmit}>
-                  <Select className={styles.sel} onChange={(e)=>SetProject (e.target.value)}>
+                  <Select
+                    className={styles.sel}
+                    onChange={(e) => SetProject(e.target.value)}
+                  >
                     <option value="Example Search">Example Search</option>
                     <option value="New Project">New Project</option>
                     <option value="Example Project">Example Project </option>
                   </Select>
 
-                  <Select className={styles.sel} onChange={(e)=>Setpu(e.target.value)}>
-                    <option value="Chosses a category">Chosses a category</option>
+                  <Select
+                    className={styles.sel}
+                    onChange={(e) => Setpu(e.target.value)}
+                  >
+                    <option value="Chosses a category">
+                      Chosses a category
+                    </option>
                     <option value="Entrainment">Entrainment</option>
                     <option value="Lodging">Lodging</option>
                     <option value="Mileage">Mileage</option>
                     <option value="Others">Others</option>
                     <option value="Transportion">Transportion</option>
                   </Select>
-                  <Input 
-                  onChange={(e)=>SetNotes(e.target.value)}
-                  value={notes}
+                  <Input
+                    onChange={(e) => SetNotes(e.target.value)}
+                    value={notes}
                     type="text"
                     placeholder="Notes (Optional)"
                     className={styles.sel}
-                    
                   />
                   <Input type="file" />
                   <Checkbox
@@ -133,36 +161,21 @@ export const Expenses = () => {
               </Box>
               <Box className={styles.rpay}>
                 <h1>Amount</h1>
-                <Input type="text" color="black" value={amount} placeholder="$" onChange={(e)=> Setamount(e.target.value)} />
+                <Input
+                  type="text"
+                  color="black"
+                  value={amount}
+                  placeholder="$"
+                  onChange={(e) => Setamount(e.target.value)}
+                />
               </Box>
             </Box>
           </Box>
         ) : null}
-        <Box>
-          {/* <Img src="https://cache.harvestapp.com/static/illustrations/expense_onboard-AAC9C67E.png"/> */}
-        </Box>
+        <Box></Box>
       </Box>
 
-     
-
-{/* //table part*/}
-
- {table ? <Table/> :<Box className={styles.blanck}>
-        <Box className={styles.logos}>
-          <Box className={styles.imga}>
-            {" "}
-            <Image src="https://cache.harvestapp.com/static/illustrations/expense_onboard-AAC9C67E.png" />
-          </Box>
-          <h1>
-            Record those airline tickets, meals, miles, and other expenses in
-            Harvest <br />
-            so you can more accurately budget projects and invoice clients.
-          </h1>
-        </Box>
-      </Box> }
-
-
- {/* <Table/> */}
+      {tabledata.length ? <Table tdata={tabledata} /> : <BlankBox />}
     </div>
   );
 };

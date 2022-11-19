@@ -32,7 +32,7 @@ function Products() {
     fetch("http://localhost:8080/time")
       .then((res) => res.json())
       .then((data) => setProducts(data));
-  }, [products]);
+  }, []);
 
   const del = (id) => {
     fetch(`http://localhost:8080/time/${id}`, {

@@ -4,7 +4,7 @@ import * as types from "./actionTypes";
 export const signupHandler = (data) => (dispatch) => {
   dispatch({ type: types.SIGNUP_LOADING });
   return axios
-    .post("http://localhost:8080/signup", data)
+    .post("https://project-backend-production-62d5.up.railway.app/signup", data)
     .then((r) => {
       console.log(r);
       return dispatch({ type: types.SIGNUP_SUCCESS });
@@ -18,7 +18,7 @@ export const signupHandler = (data) => (dispatch) => {
 export const loginHandler = (data) => (dispatch) => {
   dispatch({ type: types.LOGIN_LOADING });
   return axios
-    .post("http://localhost:8080/login", data)
+    .post("https://project-backend-production-62d5.up.railway.app/login", data)
     .then((r) => {
       console.log(r);
       return dispatch({

@@ -45,7 +45,7 @@ const EditExpence = () => {
     console.log(payload);
 
     axios
-      .patch(`http://localhost:8080/expenses/${id}`, payload)
+      .patch(`https://project-backend-production-62d5.up.railway.app/expenses/${id}`, payload)
       .then(({ data }) => {
         console.log(data, "test");
         navigate("/expenses")
@@ -54,7 +54,7 @@ const EditExpence = () => {
   console.log(id);
 
   const deleteExpence = () => {
-    axios.delete(`http://localhost:8080/expenses/${id}`);
+    axios.delete(`https://project-backend-production-62d5.up.railway.app/expenses/${id}`);
     Setlast(false); 
     navigate("/expenses")
 

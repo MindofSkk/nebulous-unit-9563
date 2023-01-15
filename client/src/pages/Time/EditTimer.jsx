@@ -22,7 +22,7 @@ function Edit(props) {
 
     useEffect(() => {
         
-        fetch(`http://localhost:8080/time/${props._id}`)
+        fetch(`https://project-backend-production-62d5.up.railway.app/time/${props._id}`)
         .then(res => res.json())
         .then(product => {
 

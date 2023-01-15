@@ -35,7 +35,7 @@ export const Expenses = () => {
       date,
     };
     console.log(payload);
-    await fetch("http://localhost:8080/expenses", {
+    await fetch("https://project-backend-production-62d5.up.railway.app/expenses", {
       method: "POST",
       body: JSON.stringify(payload),
       headers: {
@@ -55,7 +55,7 @@ export const Expenses = () => {
   const getdata = async() => {
     setLoading(true);
 
-    fetch("http://localhost:8080/expenses", {
+    fetch("https://project-backend-production-62d5.up.railway.app/expenses", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

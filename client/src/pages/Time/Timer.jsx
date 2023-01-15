@@ -29,13 +29,13 @@ function Products() {
 
   console.log(today);
   useEffect(() => {
-    fetch("http://localhost:8080/time")
+    fetch("https://project-backend-production-62d5.up.railway.app/time")
       .then((res) => res.json())
       .then((data) => setProducts(data));
   }, []);
 
   const del = (id) => {
-    fetch(`http://localhost:8080/time/${id}`, {
+    fetch(`https://project-backend-production-62d5.up.railway.app/time/${id}`, {
       method: "DELETE",
     });
 

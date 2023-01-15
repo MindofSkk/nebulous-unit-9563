@@ -56,7 +56,7 @@ function Create(props) {
     };
 
     axios({
-      url: "http://localhost:8080/time/create",
+      url: "https://project-backend-production-62d5.up.railway.app/time/create",
       method: "Post",
       data: payload,
     })
